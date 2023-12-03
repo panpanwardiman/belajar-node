@@ -82,7 +82,7 @@ describe('PUT /api/contacts/:contactId/address/:addressId', function() {
             .set('Authorization', 'test')
             .send({
                 street: "jalan test update",
-                city: "",
+                city: "kota test update",
                 province: "provinsi test update",
                 country: "",
                 postal_code: "12345"
@@ -166,5 +166,29 @@ describe('DELETE /api/contacts/:contactId/address/:addressId', function () {
         
         expect(result.status).toBe(200)
         expect(result.body.data).toBe("OK")
+    })
+})
+
+describe('GET /api/contacts/:contactId/address', function () {
+    beforeEach(async () => {
+        await createTestUser()
+        await createTestContact()
+        await createTestAddress()
+    })
+
+    afterEach(async () => {
+        await removeAllTestAddresses()
+        await removeAllTestContacts()
+        await removeTestUser()
+    })
+
+    it('should can show list data address', async () => {
+        const contact = await getTestContact()
+        const result = await supertest(web)
+            .get('/api/contacts/'+ contact.id +'/address/')
+            .set('Authorization', 'test')
+        
+        expect(result.status).toBe(200)
+        expect(result.body.data.length).toBe(1)
     })
 })

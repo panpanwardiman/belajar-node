@@ -41,9 +41,21 @@ const remove = async (req, res, next) => {
     try {
         const contactId = req.params.contactId
         const addressId = req.params.addressId
-        await addressService.get(req.user, contactId, addressId)
+        await addressService.remove(req.user, contactId, addressId)
         res.status(200).json({
             data: "OK"
+        })
+    } catch (error) {
+        next(error)
+    }
+}
+
+const list = async (req, res, next) => {
+    try {
+        const contactId = req.params.contactId
+        const result = await addressService.list(req.user, contactId)
+        res.status(200).json({
+            data: result
         })
     } catch (error) {
         next(error)
@@ -54,5 +66,6 @@ export default {
     create,
     update,
     get,
-    remove
+    remove,
+    list
 }

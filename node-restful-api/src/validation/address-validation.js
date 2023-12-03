@@ -17,7 +17,13 @@ const updateAddressValidation = Joi.object({
     postal_code: Joi.string().max(10).optional()
 })
 
+const getAddressValidation = Joi.object({
+    id: Joi.number().positive().required(),
+    contact_id: Joi.number().positive().required()
+})
+
 export {
     createAddressValidation,
-    updateAddressValidation
+    updateAddressValidation,
+    getAddressValidation
 }

@@ -116,7 +116,6 @@ describe('GET /api/contacts/:contactId/address/:addressId', function () {
             .set('Authorization', 'test')
         
         expect(result.status).toBe(200)
-        expect(result.status).toBe(200)
         expect(result.body.data.id).toBeDefined()
         expect(result.body.data.street).toBe('jalan test')
         expect(result.body.data.city).toBe('kota test')
@@ -142,5 +141,30 @@ describe('GET /api/contacts/:contactId/address/:addressId', function () {
         
         expect(result.status).toBe(400)
         expect(result.body.errors).toBeDefined()
+    })
+})
+
+describe('DELETE /api/contacts/:contactId/address/:addressId', function () {
+    beforeEach(async () => {
+        await createTestUser()
+        await createTestContact()
+        await createTestAddress()
+    })
+
+    afterEach(async () => {
+        await removeAllTestAddresses()
+        await removeAllTestContacts()
+        await removeTestUser()
+    })
+
+    it('should can delete data address', async () => {
+        const contact = await getTestContact()
+        const address = await getTestAddress()
+        const result = await supertest(web)
+            .delete('/api/contacts/'+ contact.id +'/address/' + address.id)
+            .set('Authorization', 'test')
+        
+        expect(result.status).toBe(200)
+        expect(result.body.data).toBe("OK")
     })
 })
